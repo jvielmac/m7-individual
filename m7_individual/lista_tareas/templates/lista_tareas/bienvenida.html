@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="text-center">
+    <h2>Bienvenido/a {{ usuario_activo.username }} &#x1F603;</h2>
+    <a href="{% url 'usuarios:logout' %}" class='btn btn-danger m-2' role='button'>Cerrar Sesión</a>
+</div>
+{% endblock content %}

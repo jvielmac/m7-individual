@@ -1,0 +1,23 @@
+.navbar, #footer{
+    background-color: #b8b8b8;
+}
+
+.card {
+    background-color: #b8b8b8;
+}
+
+body {
+    background-color: #d3d3d3;
+}
+
+.hero-bg {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #757575;
+    height: 500px;
+}
+
+.mask {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #f0f0f0;
+}

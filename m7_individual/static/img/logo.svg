@@ -1,0 +1,18 @@
+<svg
+  version="1.1"
+  width="100%"
+  viewBox="0 0 24 24"
+  xmlns="http://www.w3.org/2000/svg">
+
+<rect
+x="4" y="4" width="16" height="16" rx="1"
+fill="none" stroke="#000" stroke-width="2"
+/>
+
+<polyline
+fill="none" stroke="green" stroke-width="3"
+stroke-linejoin="round" stroke-linecap="round"
+points="2,12 8,18 22,2"
+/>
+
+</svg>
