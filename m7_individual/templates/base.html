@@ -13,36 +13,44 @@
 
 <body>
     <div id="main" class="min-vh-100 d-flex flex-column justify-content-between">
-        <!-- Header -->
-        <nav class="navbar sticky-top">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">
-                    <object data="{% static 'img/logo.svg' %}" type="image/svg+xml" width="32" height="32"
-                        class="d-inline-block align-text-top"></object>
-                    <span>Mis Tareas</span>
-                </a>
-                <div class="d-flex align-items-center">
-                    {% if usuario_activo.is_authenticated %}
-                    <span class="fs-5 mx-1">{{ usuario_activo.username }}</span>
-                    <a href="{% url 'usuarios:logout' %}" class='btn btn-danger my-2'>Salir</a>
-                    {% else %}
-                    <a class="btn btn-primary btn-floating mx-1" href="{% url 'usuarios:login' %}"
-                        role="button">Ingreso</a>
-                    {% endif %}
+        <div>
+            <!-- Header -->
+            <nav class="navbar sticky-top">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/">
+                        <object data="{% static 'img/logo.svg' %}" type="image/svg+xml" width="32" height="32"
+                            class="d-inline-block align-text-top"></object>
+                        <span>Mis Tareas</span>
+                    </a>
+                    <div class="d-flex align-items-center">
+                        {% if usuario.is_authenticated %}
+                        <span class="fs-5 mx-1">{{ usuario.username }}</span>
+                        <a href="{% url 'usuarios:logout' %}" class='btn btn-danger my-2'>Salir</a>
+                        {% else %}
+                        <a class="btn btn-primary btn-floating mx-1" href="{% url 'usuarios:login' %}"
+                            role="button">Ingreso</a>
+                        {% endif %}
+                    </div>
                 </div>
+            </nav>
+            <!-- Fin Header -->
+
+            <div class="container">
+                {% block top %}
+                {% endblock top %}
             </div>
-        </nav>
-        <!-- Fin Header -->
+        </div>
 
         <div class="container">
-            {% block content %}
-            {% endblock content %}
+            {% block centered %}
+            {% endblock centered %}
         </div>
 
         <!-- Footer -->
         <div id="footer" class="p-2 text-center">
             &copy; Mis Tareas 2023
         </div>
+        <!-- Fin Footer -->
     </div>
 
     <!-- Script de Bootstrap -->

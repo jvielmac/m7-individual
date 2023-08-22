@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block content %}
-
+{% block centered %}
 <div class="hero-bg d-flex flex-column align-items-center justify-content-center my-2"
     style="background-image: url(&quot;{% static 'img\Bullet-Journal-by-Matt-Ragland.jpg' %}&quot;);">
     <div class="mask p-4 text-center w-100">
@@ -11,5 +10,4 @@
         <a href="{% url 'usuarios:login' %}" class="btn btn-primary" role="button">Iniciar Sesión</a>
     </div>
 </div>
-
-{% endblock content %}
+{% endblock centered %}

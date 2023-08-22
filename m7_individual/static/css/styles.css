@@ -1,8 +1,8 @@
-.navbar, #footer{
+.navbar, #footer {
     background-color: #b8b8b8;
 }
 
-.card {
+.card, .list-group, .list-group-item {
     background-color: #b8b8b8;
 }
 
