@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block centered %}
+<div class="row d-flex justify-content-center my-3">
+    <div class="col-12 col-lg-6">
+        <div class="card p-3">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <input type="submit" class="btn btn-primary my-2" value="{{ texto_submit }}">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock centered %}
