@@ -1,26 +1,41 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 
 {% block top %}
 <div class="d-flex justify-content-end my-2">
-    <a href="#" class="btn btn-success mx-2" role="button">Completar</a>
+    <form action="{% url 'lista-tareas:completar' pk=tarea.pk %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="estado" value="completada">
+        <input type="submit" class="btn btn-success mx-2" value="Completar">
+    </form>
     <a href="{% url 'lista-tareas:editar' pk=tarea.pk %}" class="btn btn-primary mx-2" role="button">Editar</a>
-    <a href="#" class="btn btn-danger mx-2" role="button">Eliminar</a>
+    <a href="{% url 'lista-tareas:eliminar' pk=tarea.pk %}" class="btn btn-danger mx-2" role="button">Eliminar</a>
 </div>
 {% endblock top %}
 
 {% block centered %}
 <div class="row">
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title fw-bold">{{ tarea.titulo }}</h5>
-            <div class="card-text">
-                <p> {{ tarea.descripcion }}</p>
-                <p><span class="fw-bold">Estado:</span> {{ tarea.estado }}</p>
-                <p><span class="fw-bold">Etiqueta:</span> {{ tarea.etiqueta }}</p>
-                <p>Vence {{ tarea.vencimiento }}</p>
+    <div class="col-12 col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title fw-bold">{{ tarea.titulo }}</h5>
+                <div class="card-text">
+                    <p> {{ tarea.descripcion }}</p>
+                    <p><span class="fw-bold">Estado:</span> {{ tarea.estado }}</p>
+                    <p><span class="fw-bold">Etiqueta:</span> {{ tarea.etiqueta }}</p>
+                    <p>Vence {{ tarea.vencimiento }}</p>
+                </div>
             </div>
         </div>
+    </div>
+
+    <div class="col-12- col-lg-6">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" class="btn btn-success my-2" value="Guardar Observaciones">
+        </form>
     </div>
 </div>
 {% endblock centered %}

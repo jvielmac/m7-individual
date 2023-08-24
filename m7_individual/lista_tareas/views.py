@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.urls import reverse, reverse_lazy
+from django.http import HttpResponseForbidden
 from .models import Tarea
 from .forms import FiltrarForm
 from utils.mixins import UsuarioMixin
@@ -11,6 +12,7 @@ from utils.mixins import UsuarioMixin
 class Index(UsuarioMixin, generic.TemplateView):
     template_name = 'lista_tareas/index.html'
     http_method_names = ['get']
+
 
 class ListadoTareas(LoginRequiredMixin, UsuarioMixin, generic.ListView):
     template_name = 'lista_tareas/listado.html'
@@ -30,10 +32,20 @@ class ListadoTareas(LoginRequiredMixin, UsuarioMixin, generic.ListView):
 
         return Tarea.objects.filter(**kwargs_filter).order_by('vencimiento')
 
-class DetalleTarea(LoginRequiredMixin, UsuarioMixin, generic.DetailView):
+
+class DetalleTarea(LoginRequiredMixin, UsuarioMixin, generic.DetailView, generic.UpdateView):
     template_name = 'lista_tareas/detalle.html'
     model = Tarea
     context_object_name = 'tarea'
+    fields = ['observaciones']
+
+    def get_success_url(self):
+        return reverse('lista-tareas:detalle', kwargs={'pk': self.object.pk})
+
+    def form_valid(self, form):
+        form.instance.usuario = self.request.user
+        return super().form_valid(form)
+
 
 class CrearTarea(LoginRequiredMixin, UsuarioMixin, generic.CreateView):
     template_name = 'lista_tareas/editar_tarea.html'
@@ -52,6 +64,7 @@ class CrearTarea(LoginRequiredMixin, UsuarioMixin, generic.CreateView):
         form.instance.usuario = self.request.user
         return super().form_valid(form)
 
+
 class EditarTarea(LoginRequiredMixin, UsuarioMixin, generic.UpdateView):
     template_name = 'lista_tareas/editar_tarea.html'
     model = Tarea
@@ -68,5 +81,33 @@ class EditarTarea(LoginRequiredMixin, UsuarioMixin, generic.UpdateView):
         return reverse('lista-tareas:detalle', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
+        if self.request.user != self.object.usuario:
+            return HttpResponseForbidden("<h1>403: No tienes permitido realizar esta operación</h1>")
+
         form.instance.usuario = self.request.user
+        return super().form_valid(form)
+
+
+class EliminarTarea(LoginRequiredMixin, UsuarioMixin, generic.DeleteView):
+    template_name = 'lista_tareas/eliminar_tarea.html'
+    model = Tarea
+    success_url = reverse_lazy('lista-tareas:listado')
+
+    def form_valid(self, form):
+        if self.request.user != self.object.usuario:
+            return HttpResponseForbidden("<h1>403: No tienes permitido realizar esta operación</h1>")
+
+        return super().form_valid(form)
+
+
+class CompletarTarea(LoginRequiredMixin, UsuarioMixin, generic.UpdateView):
+    http_method_names = ['post']
+    model = Tarea
+    fields = ['estado']
+    success_url = reverse_lazy('lista-tareas:listado')
+
+    def form_valid(self, form):
+        if self.request.user != self.object.usuario:
+            return HttpResponseForbidden("<h1>403: No tienes permitido realizar esta operación</h1>")
+
         return super().form_valid(form)
