@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from .models import Tarea
 from .forms import FiltrarForm
 from utils.mixins import UsuarioMixin
@@ -18,8 +18,17 @@ class ListadoTareas(LoginRequiredMixin, UsuarioMixin, generic.ListView):
     extra_context = {'filtrar_form': FiltrarForm}
 
     def get_queryset(self):
-        tareas_usuario = Tarea.objects.filter(usuario=self.request.user.pk)
-        return tareas_usuario.order_by('vencimiento')
+        kwargs_filter = {'usuario': self.request.user.pk}
+        estado = self.request.GET.get('estado')
+        etiqueta = self.request.GET.get('etiqueta')
+
+        if estado:
+            kwargs_filter['estado'] = estado
+
+        if etiqueta:
+            kwargs_filter['etiqueta'] = int(etiqueta)
+
+        return Tarea.objects.filter(**kwargs_filter).order_by('vencimiento')
 
 class DetalleTarea(LoginRequiredMixin, UsuarioMixin, generic.DetailView):
     template_name = 'lista_tareas/detalle.html'
@@ -38,6 +47,25 @@ class CrearTarea(LoginRequiredMixin, UsuarioMixin, generic.CreateView):
     ]
     extra_context = {'texto_submit': 'Crear'}
     success_url = reverse_lazy('lista-tareas:listado')
+
+    def form_valid(self, form):
+        form.instance.usuario = self.request.user
+        return super().form_valid(form)
+
+class EditarTarea(LoginRequiredMixin, UsuarioMixin, generic.UpdateView):
+    template_name = 'lista_tareas/editar_tarea.html'
+    model = Tarea
+    fields = [
+        'titulo',
+        'descripcion',
+        'vencimiento',
+        'estado',
+        'etiqueta',
+    ]
+    extra_context = {'texto_submit': 'Editar'}
+
+    def get_success_url(self):
+        return reverse('lista-tareas:detalle', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
         form.instance.usuario = self.request.user

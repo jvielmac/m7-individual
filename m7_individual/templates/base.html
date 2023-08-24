@@ -25,7 +25,7 @@
                     <div class="d-flex align-items-center">
                         {% if usuario.is_authenticated %}
                         <span class="fs-5 mx-1">{{ usuario.username }}</span>
-                        <a href="{% url 'usuarios:logout' %}" class='btn btn-danger my-2'>Salir</a>
+                        <a href="{% url 'usuarios:logout' %}" class="btn btn-danger my-2" role="button">Salir</a>
                         {% else %}
                         <a class="btn btn-primary btn-floating mx-1" href="{% url 'usuarios:login' %}"
                             role="button">Ingreso</a>

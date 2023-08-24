@@ -3,9 +3,9 @@
 
 {% block top %}
 <div class="d-flex justify-content-end my-2">
-    <a href="#" class="btn btn-success mx-2">Completar</a>
-    <a href="#" class="btn btn-primary mx-2">Editar</a>
-    <a href="#" class="btn btn-danger mx-2">Eliminar</a>
+    <a href="#" class="btn btn-success mx-2" role="button">Completar</a>
+    <a href="{% url 'lista-tareas:editar' pk=tarea.pk %}" class="btn btn-primary mx-2" role="button">Editar</a>
+    <a href="#" class="btn btn-danger mx-2" role="button">Eliminar</a>
 </div>
 {% endblock top %}
 
