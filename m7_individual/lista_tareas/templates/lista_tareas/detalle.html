@@ -22,8 +22,9 @@
                 <h5 class="card-title fw-bold">{{ tarea.titulo }}</h5>
                 <div class="card-text">
                     <p> {{ tarea.descripcion }}</p>
-                    <p><span class="fw-bold">Estado:</span> {{ tarea.estado }}</p>
+                    <p><span class="fw-bold">Estado:</span> {{ tarea.get_estado_display }}</p>
                     <p><span class="fw-bold">Etiqueta:</span> {{ tarea.etiqueta }}</p>
+                    <p class="text-danger"><span class="fw-bold">Prioridad:</span> {{ tarea.prioridad }}</p>
                     <p>Vence {{ tarea.vencimiento }}</p>
                 </div>
             </div>

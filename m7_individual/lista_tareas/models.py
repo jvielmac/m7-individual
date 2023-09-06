@@ -8,6 +8,17 @@ class Etiqueta(models.Model):
     def __str__(self):
         return self.nombre
 
+
+class Prioridad(models.Model):
+    nombre = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name_plural = 'Prioridades'
+
+
 class Tarea(models.Model):
     ESTADOS_DE_TAREA = (
         ("pendiente", "Pendiente"),
@@ -21,4 +32,8 @@ class Tarea(models.Model):
     estado = models.CharField(max_length=11, choices=ESTADOS_DE_TAREA)
     etiqueta = models.ForeignKey(Etiqueta, null=True, on_delete=models.SET_NULL)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    prioridad = models.ForeignKey(Prioridad, null=True, on_delete=models.SET_NULL)
     observaciones = models.TextField()
+
+    def __str__(self):
+        return self.titulo

@@ -21,14 +21,13 @@ class ListadoTareas(LoginRequiredMixin, UsuarioMixin, generic.ListView):
 
     def get_queryset(self):
         kwargs_filter = {'usuario': self.request.user.pk}
-        estado = self.request.GET.get('estado')
-        etiqueta = self.request.GET.get('etiqueta')
+        filtros = ['estado', 'etiqueta', 'prioridad']
 
-        if estado:
-            kwargs_filter['estado'] = estado
+        for clave_filtro in filtros:
+            valor_filtro = self.request.GET.get(clave_filtro)
 
-        if etiqueta:
-            kwargs_filter['etiqueta'] = int(etiqueta)
+            if valor_filtro:
+                kwargs_filter[clave_filtro] = valor_filtro
 
         return Tarea.objects.filter(**kwargs_filter).order_by('vencimiento')
 
@@ -56,13 +55,11 @@ class CrearTarea(LoginRequiredMixin, UsuarioMixin, generic.CreateView):
         'vencimiento',
         'estado',
         'etiqueta',
+        'usuario',
+        'prioridad',
     ]
     extra_context = {'texto_submit': 'Crear'}
     success_url = reverse_lazy('lista-tareas:listado')
-
-    def form_valid(self, form):
-        form.instance.usuario = self.request.user
-        return super().form_valid(form)
 
 
 class EditarTarea(LoginRequiredMixin, UsuarioMixin, generic.UpdateView):
@@ -74,18 +71,12 @@ class EditarTarea(LoginRequiredMixin, UsuarioMixin, generic.UpdateView):
         'vencimiento',
         'estado',
         'etiqueta',
+        'prioridad',
     ]
     extra_context = {'texto_submit': 'Editar'}
 
     def get_success_url(self):
         return reverse('lista-tareas:detalle', kwargs={'pk': self.object.pk})
-
-    def form_valid(self, form):
-        if self.request.user != self.object.usuario:
-            return HttpResponseForbidden("<h1>403: No tienes permitido realizar esta operación</h1>")
-
-        form.instance.usuario = self.request.user
-        return super().form_valid(form)
 
 
 class EliminarTarea(LoginRequiredMixin, UsuarioMixin, generic.DeleteView):
