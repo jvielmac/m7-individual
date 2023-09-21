@@ -2,16 +2,18 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block centered %}
-<div class="row d-flex justify-content-center">
-    <div class="col-12 col-lg-6">
-        <div class="card p-3">
-            <form method="POST">
-                {% csrf_token %}
-                {{ form | crispy }}
-                <input type="submit" class="btn btn-primary" value="Ingresar">
-            </form>
+{% block content %}
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-12 col-lg-6">
+            <div class="card p-3">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <input type="submit" class="btn btn-primary" value="Ingresar">
+                </form>
+            </div>
         </div>
     </div>
 </div>
-{% endblock centered %}
+{% endblock content %}

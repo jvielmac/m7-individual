@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
 
-{% block centered %}
-<div class="row d-flex justify-content-center">
-    <div class="col-12 col-lg-6">
-        <div class="card p-3">
-            <form class="text-center" method="POST">
-                {% csrf_token %}
-                <p class="fs-3">{{ object.titulo }}</p>
-                <p class="fs-3">¿Estas seguro que deseas eliminar la tarea?</p>
-                <input type="submit" class="btn btn-danger" value="Eliminar Tarea">
-            </form>
+{% block content %}
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-12 col-lg-6">
+            <div class="card p-3">
+                <form class="text-center" method="POST">
+                    {% csrf_token %}
+                    <p class="fs-3">{{ object.titulo }}</p>
+                    <p class="fs-3">¿Estas seguro que deseas eliminar la tarea?</p>
+                    <input type="submit" class="btn btn-danger" value="Eliminar Tarea">
+                </form>
+            </div>
         </div>
     </div>
 </div>
-{% endblock centered %}
+{% endblock content %}
